@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ImportFeedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +19,5 @@ Route::resource('posts', PostController::class);
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
-
-Route::get('/feed', ImportFeedController::class);
 
 require __DIR__.'/auth.php';
