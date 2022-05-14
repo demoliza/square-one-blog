@@ -1,22 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
-use Illuminate\Http\Request;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 
-class ImportFeedController extends Controller
+class FetchFeed extends Command
 {
     /**
-     * Handle the incoming request.
+     * The name and signature of the console command.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @var string
      */
-    public function __invoke(Request $request)
+    protected $signature = 'fetch:posts';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Fetch posts from feed';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
     {
         $url = config('app.blog_feed_url');
         $response = Http::acceptJson()->get($url);
@@ -42,6 +55,8 @@ class ImportFeedController extends Controller
             }
             
             DB::table('posts')->upsert($postsToInsert, ['title'], []);
+
+            return 0;
         }
     }
 }
